@@ -29,7 +29,7 @@ for subj in `cat ${sub_list}`; do
 echo $subj
 
 # extracts average time series from specified ROIs
-python /om/user/annepark/projects/EF4/analysis/rsfmri_final/scripts/make_seed_ts_files.py ${subj} ${data_dir} ${fs_roi_list}
+python /data/picsl/mackey_group/Ursula/scripts/rs_scripts/make_seed_ts_files.py ${subj} ${data_dir} ${fs_roi_list}
 
 for roi in `cat ${roi_list_abbrev}`; do
 
@@ -42,7 +42,7 @@ echo '#!/bin/sh' > rsfmri_glm_cmd.sh
 
 echo "fsl_glm -i ${data_dir}/${subj}/resting/timeseries/target/rest_01_smooth_trans_masked.nii.gz -d ${data_dir}/${subj}/resting/roi_betas/${roi}/seed_ts.txt -o ${data_dir}/${subj}/resting/roi_betas/${roi}/MNI_beta.nii.gz --demean" >> rsfmri_glm_cmd.sh
 
-sbatch rsfmri_glm_cmd.sh
+qsub -j y -o /data/picsl/mackey_group/Ursula/job_output/qsub_output -l s_vmem=5G,h_vmem=5.2G rsfmri_glm_cmd.sh
 
 done
 
